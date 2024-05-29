@@ -10,30 +10,38 @@ const Products = () => {
   const [searchKeyword, setSearchKeyword] = useState < string >("");
   const [page, changePage] = useState < number > (0);
 
-  const getProducts = async (page:number) => {
+
+  /**
+   *A function which asynchronously fetches the data from the server
+   * @function getProducts
+   * @async
+   * @returns - A promise that returns the product details
+   */
+  const getProducts = async () => {
     const skipValues = page * 30;
     try {
       const api = "https://dummyjson.com/products";
       console.log("fetching products");
       const response = await fetch(`${api}?skip=${skipValues}&limit=30`);
       const data = await response.json();
-      console.log(data.products);
-      return data.products;
+      setProducts(data.products);
     } catch (error) {
       console.error("Error", error);
       return [];
     }
   };
 
-  useEffect(() => {
-    const fetchProducts = async () => {
-      const fetchedProducts = await getProducts(page);
-      setProducts(fetchedProducts);
-    };
 
-    fetchProducts();
+  useEffect(() => {
+   getProducts()
   }, [page]);
 
+
+  /**
+   * @function
+   * @name onChangePage
+   * @param  nav - Gives the pagination direction and changes the page number accordingly from the button
+   */
   const onChangePage = (nav: string) => {
     if (nav === "prev") {
       changePage(page - 1);
@@ -44,6 +52,11 @@ const Products = () => {
     }
   };
 
+  /**
+   * 
+   * @param keyword - Gives the keywords from the user to filter the products list
+   * @returns Products list which is filtered by the user input
+   */
     function filterProducts(keyword:string) {
     const searchKeyword = keyword.toLowerCase();
     return products.filter((product) => {
@@ -54,8 +67,8 @@ const Products = () => {
     });
   }
 
-  const filteredProducts = filterProducts(searchKeyword);
 
+  const filteredProducts = filterProducts(searchKeyword);
 
   return (
   <div className="bg-white h-screen w-full overflow-y-auto">

@@ -1,8 +1,12 @@
 import { ProductDetails } from "../utils/types";
-
 import Image from "next/image";
 
-const DetailedProductCard = ({ productDetails }:{productDetails:ProductDetails}) => {
+/**
+ * 
+ * @param {object} product - Various details about the product are passed as object
+ * @returns {JSX.Element} JSX component about the detailed view of the product along with multiple pictures, ratings and reviews from the customer who purchased and used the product
+ */
+const DetailedProductCard = ({ productDetails }:{productDetails:ProductDetails}): JSX.Element => {
   const {
     title,
     brand,
